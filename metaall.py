@@ -1,3 +1,5 @@
+#This Task was created based on the work of Castel et. al 2011. If you  use this program, please credit Castel et. al 2011.#
+#------------------------------------------------------------------------------------------------------------------------------
 #TO DO
 #Clean Up
 #
