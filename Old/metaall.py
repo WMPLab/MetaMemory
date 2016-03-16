@@ -1,4 +1,5 @@
 #This Task was created based on the work of Castel et. al 2011. If you  use this program, please credit Castel et. al 2011.#
+#Psychopy Version 1.82xx                                                                                                   #
 #------------------------------------------------------------------------------------------------------------------------------
 #TO DO
 #Clean Up
@@ -57,8 +58,10 @@ scoreYet = False
 referenceWords = []
 wordsTheyRecalled =[]
 corrects = ''
+loops = 5
 #------------------------------------------------------------------------------------------------------------
 #Functions---------------------------------------------------------------------------------------------------
+
 def recordWordsTheyTyped(fileName, word):
     if os.path.exists(fileName):
         dataFile =open(fileName, 'a')
@@ -127,7 +130,7 @@ def writeToDataFile(dataFileName,wordToWrite,r,cs):#r is the risk amount variabl
             dataFileWriter.writeheader()
             dataFileWriter.writerow({'Subject': expInfo['Subject'], 'Session': expInfo['Session'], 'Round': round-1, 'Word': wordToWrite, 'Points': r, 'Cumulative Score': cs})
             dataFile.close()
-    
+
 def populateOldWords():
     x=[(0,150),(0,100),(0,50),(0,0),(0,-50),(0,-100),(0,-150),(0,-200),(0,-250),(0,-300),(0,-350),(200,150),\
     (200,100),(200,50),(200,0),(200,-50),(200,-100),(200,-150),(200,-200),(200,-250),(200,-300),(200,-350),\
@@ -142,7 +145,7 @@ def populateOldWords():
         c += 1
 
 def WaitForKeyInput2():
-    text='...' 
+    text='...'
     global scoreYet
     response = visual.TextStim(mywin, height=75,text=text,color="white",pos=(0, 250))
     response.draw()
@@ -216,7 +219,7 @@ def WaitForMouseInput():
             if sum(buttons) == 0:
                 RT = trialClock.getTime()
                 mouseX,mouseY = myMouse.getPos()
-                if mouseY > -300 and mouseY < 0: 
+                if mouseY > -300 and mouseY < 0:
                     if mouseX > -400 and mouseX <0:
                         ans = "yes"
                         goforit = False
@@ -233,7 +236,7 @@ def WaitForMouseInput():
                     myMouse.clickReset()
                     waitforrelease = False
                     continue
- 
+
 def RunBlock():
     already = True#why is this here again?
     bet = 999
@@ -241,7 +244,7 @@ def RunBlock():
     #load words
     wordList = './words/%s/words%i.txt' %(version ,round)
     words = list(cor for cor in open(wordList).read().split("\n") if cor)
-    #show words 
+    #show words
     i=0
     event.clearEvents()
     while event.getKeys(keyList=['return'])==[]:#wait till ready
@@ -422,14 +425,14 @@ def correct(word):
 #--------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------
 #Instructions--------------------------------------------------------------------------------
-for i in range(0,4):
+for i in range(0, (loops-1)):
     showInstructions(i)
 #--------------------------------------------------------------------------------------------
 #Run------------------------------------------------------------------------------------------
 practice = True #don't score first round
 for x in range(0,5):
     k = RunBlock()
-    for word in wordsTheyRecalled: #still record the words they typed. 
+    for word in wordsTheyRecalled: #still record the words they typed.
         recordWordsTheyTyped(inputFileName,word)
     s = fScore()
     wordsTheyRecalled= [] #hopefully this makes it so that it doesnt show the old words
@@ -440,4 +443,4 @@ while event.getKeys(keyList = ['return']) == []:
     questions.draw()
     thanks = visual.TextStim(mywin, height=30,text='Thank you for completing this task!',color="white",pos=(0, 0))
     thanks.draw()
-    mywin.flip() 
+    mywin.flip()
